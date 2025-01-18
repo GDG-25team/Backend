@@ -1,7 +1,7 @@
 package gdg.team25.domain.member.controller;
 
-import gdg.team25.domain.member.dto.AddressRequest;
-import gdg.team25.domain.member.dto.AddressResponse;
+import gdg.team25.domain.member.dto.address.AddressRequest;
+import gdg.team25.domain.member.dto.address.AddressResponse;
 import gdg.team25.domain.member.service.AuthService;
 import gdg.team25.domain.member.service.MemberService;
 import gdg.team25.global.response.BaseResponse;
@@ -9,7 +9,6 @@ import gdg.team25.global.security.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
