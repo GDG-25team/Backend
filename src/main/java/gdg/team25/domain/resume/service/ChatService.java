@@ -3,8 +3,10 @@ package gdg.team25.domain.resume.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gdg.team25.domain.resume.domain.Resume;
 import gdg.team25.domain.resume.dto.openApiDTO.request.ChatGPTRequest;
 import gdg.team25.domain.resume.dto.openApiDTO.response.ChatGPTResponse;
+import gdg.team25.domain.resume.repository.ResumeRepository;
 import io.github.flashvayne.chatgpt.service.ChatgptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -24,6 +27,8 @@ import java.util.Map;
 public class ChatService{
 
     private final ChatgptService chatgptService;
+    private final ResumeRepository resumeRepository;
+
     @Value("${openai.model}")
     private String apiModel;
 
@@ -39,8 +44,8 @@ public class ChatService{
         // ChatGPT 에게 질문을 던집니다.
         return chatgptService.sendMessage(prompt);
     }
-    public String createResume(String text, String requestText) throws JsonProcessingException {
-        ChatGPTRequest request = ChatGPTRequest.createTextRequest(apiModel, 300, "user", text, requestText);
+    public Resume createResume(String text) throws JsonProcessingException {
+        //ChatGPTRequest request = ChatGPTRequest.createTextRequest(apiModel, 300, "user", text);
         //ChatGPTResponse chatGPTResponse =  template.postForObject(apiUrl, request, ChatGPTResponse.class);
         //return chatGPTResponse.getChoices().get(0).getMessage().getContent();
         //return template.postForObject(apiUrl, request, ChatGPTResponse.class);
@@ -81,7 +86,131 @@ public class ChatService{
                 .asText();
 
         String answer = "ChatGPT Response: " + content;
+        Resume resume = Resume.builder()
+                .userId("678bfae853d2717504f5b1d0")
+                .noticeId("678c154acc602b33864aaaae")
+                .intro(answer)
+                .build();
 
-        return answer;
+
+        return resumeRepository.save(resume);
     }
+    public Resume createCarrer(String text) throws JsonProcessingException {
+
+        // 응답 내용 확인
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + openAiApiKey);
+        headers.set("Content-Type", "application/json");
+
+        // 요청 바디 설정
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", "gpt-3.5-turbo");
+        requestBody.put("messages", new Object[]{
+                Map.of("role", "user", "content", "나는 자격증 정보처리기사를 2025년 1월 18일에 땄고, SQLD는 2025년 1월 15일에 땄어. 앞에 있는 문장들을 기반으로 내용을 요약해줘.")
+        });
+        requestBody.put("max_tokens", 300);
+
+        // HTTP 요청 생성
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<String> responseEntity = template.exchange(
+                apiUrl,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+
+
+        // 응답 내용 확인
+        String responseBody = responseEntity.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(responseBody);
+
+        String content = rootNode
+                .path("choices")
+                .get(0)
+                .path("message")
+                .path("content")
+                .asText();
+
+        String answer = "ChatGPT Response: " + content;
+        Resume resume = Resume.builder()
+                .userId("678bfae853d2717504f5b1d0")
+                .noticeId("678c154acc602b33864aaaae")
+                .carrer(answer)
+                .build();
+
+
+        return resumeRepository.save(resume);
+    }
+    public Resume createCertificates(String text) throws JsonProcessingException {
+
+        // 응답 내용 확인
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + openAiApiKey);
+        headers.set("Content-Type", "application/json");
+
+        // 요청 바디 설정
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", "gpt-3.5-turbo");
+        requestBody.put("messages", new Object[]{
+                Map.of("role", "user", "content", "구글에서 판매원으로 2024년 1월 15일부터 2024년 2월 25일까지 일했었어. 앞에 있는 문장들을 기반으로 내용을 요약해줘.")
+        });
+        requestBody.put("max_tokens", 300);
+
+        // HTTP 요청 생성
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<String> responseEntity = template.exchange(
+                apiUrl,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+
+
+        // 응답 내용 확인
+        String responseBody = responseEntity.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(responseBody);
+
+        String content = rootNode
+                .path("choices")
+                .get(0)
+                .path("message")
+                .path("content")
+                .asText();
+
+
+        String answer = "ChatGPT Response: " + content;
+        Resume resume = Resume.builder()
+                .userId("678bfae853d2717504f5b1d0")
+                .noticeId("678c154acc602b33864aaaae")
+                .others(answer)
+                .build();
+
+
+        return resumeRepository.save(resume);
+    }
+
+    public Resume createSupport(String noticeId) throws JsonProcessingException {
+        List<Resume> resumes = resumeRepository.findAllByNoticeId(noticeId);
+        Resume data = Resume.builder()
+                .userId("678bfae853d2717504f5b1d0")
+                .noticeId("678c154acc602b33864aaaae").build();
+        for (Resume resume : resumes) {
+            if(resume.getCarrer() != null) {
+                data.setCarrer(resume.getCarrer());
+            }
+            if(resume.getIntro() != null) {
+                data.setIntro(resume.getIntro());
+
+            }
+            if(resume.getOthers() != null) {
+                data.setOthers(resume.getOthers());
+            }
+        }
+
+        return data;
+
+    }
+
 }
