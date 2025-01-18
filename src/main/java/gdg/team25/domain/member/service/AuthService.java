@@ -54,15 +54,13 @@ public class AuthService {
 
     public TokenResponse login(String code) {
         OAuthToken oAuthToken = getToken(code);
-        KakaoProfile kakaoProfile = getMemberInfo(oAuthToken.getAccessToken());
 
-        byte[] array = new byte[7]; // length is bounded by 7
+        byte[] array = new byte[7];
         new Random().nextBytes(array);
         String generatedString = new String(array, Charset.forName("UTF-8"));
-        Long age = 30L;
         Member member = Member.builder()
                 .email(generatedString)
-                .age(21L)
+                .age(65L)
                 .gender("male")
                 .phoneNumber("01039057347")
                 .password(passwordEncoder.encode("1234"))
