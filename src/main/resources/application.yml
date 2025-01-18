@@ -1,14 +1,7 @@
 spring:
   data:
     mongodb:
-      user: root
-      password: 1234
-      uri: mongodb://host:27017/db
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
+      uri: mongodb+srv://mongo:i4T4gIm7XPSvFYfV@dev-gdgochack25-mongodb.u214z.mongodb.net/test?retryWrites=true&w=majority
 
   mvc:
     pathmatch:
@@ -16,4 +9,6 @@ spring:
 
 logging:
   level:
-    org.springframework.cache : trace
+    org.springframework.cache: trace
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    com.mongodb: DEBUG
