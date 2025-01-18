@@ -38,15 +38,21 @@ dependencies {
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
     // Google Speech To Text
     implementation 'com.google.cloud:google-cloud-speech:4.28.0'
+
+
+    // Webflux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     //chatGPT-API
     implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     testImplementation 'org.assertj:assertj-core:3.24.2'  // 최신 버전을 사용하세요
-}
 
-tasks.named('test') {
-    useJUnitPlatform()
 }
