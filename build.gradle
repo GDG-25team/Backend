@@ -40,6 +40,11 @@ dependencies {
 
     // Google Speech To Text
     implementation 'com.google.cloud:google-cloud-speech:4.28.0'
+
+    //chatGPT-API
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation 'org.assertj:assertj-core:3.24.2'  // 최신 버전을 사용하세요
 }
 
 tasks.named('test') {
