@@ -1,0 +1,19 @@
+spring:
+  data:
+    mongodb:
+      user: root
+      password: 1234
+      uri: mongodb://host:27017/db
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+logging:
+  level:
+    org.springframework.cache : trace
