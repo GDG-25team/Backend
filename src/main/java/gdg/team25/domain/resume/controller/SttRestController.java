@@ -1,6 +1,7 @@
 package gdg.team25.domain.resume.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import gdg.team25.domain.resume.domain.Resume;
 import gdg.team25.domain.resume.dto.openApiDTO.request.ChatGPTRequest;
 import gdg.team25.domain.resume.dto.openApiDTO.response.ChatGPTResponse;
 import gdg.team25.domain.resume.service.ChatService;
@@ -49,9 +50,28 @@ public class SttRestController {
     private RestTemplate template;
 
     @GetMapping("/chat")
-    public String chat(@RequestBody String requestText) throws JsonProcessingException {
-        String fixedRequestText="해당 문장들을 좀 꾸며서 작성해줘.";
-        //ChatGPTRequest chatGPTRequest = ChatGPTRequest.createTextRequest(model, 100, "user", prompt + fixedRequestText);
-        return chatService.createResume(requestText, fixedRequestText);
+    public Resume chat(@RequestBody String requestText) throws JsonProcessingException {
+
+        return chatService.createResume(requestText);
     }
+    @GetMapping("/carrer")
+    public Resume carrer(@RequestBody String requestText) throws JsonProcessingException {
+
+        return chatService.createCarrer(requestText);
+    }
+
+    @GetMapping("/certificates")
+    public Resume certificates(@RequestBody String requestText) throws JsonProcessingException {
+
+        return chatService.createCertificates(requestText);
+    }
+
+    @GetMapping("/{noticeId}")
+    public Resume all(@PathVariable String noticeId) throws JsonProcessingException {
+
+        return chatService.createSupport(noticeId);
+    }
+
+
+
 }
