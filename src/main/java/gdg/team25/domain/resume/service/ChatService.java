@@ -39,7 +39,6 @@ public class ChatService{
         // ChatGPT 에게 질문을 던집니다.
         return chatgptService.sendMessage(prompt);
     }
-
     public String createResume(String text, String requestText) throws JsonProcessingException {
         ChatGPTRequest request = ChatGPTRequest.createTextRequest(apiModel, 300, "user", text, requestText);
         //ChatGPTResponse chatGPTResponse =  template.postForObject(apiUrl, request, ChatGPTResponse.class);
